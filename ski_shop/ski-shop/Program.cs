@@ -1,6 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using ski_shop;
 using ski_shop.Data;
+using ski_shop.Middleware;
 using static System.Runtime.InteropServices.JavaScript.JSType;
 
 internal class Program
@@ -22,6 +23,8 @@ internal class Program
         builder.Services.AddCors();
 
         var app = builder.Build();
+
+        app.UseMiddleware<ExceptionMiddleware>();
 
         using (var scope = app.Services.CreateScope())
         {
