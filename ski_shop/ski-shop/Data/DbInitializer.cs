@@ -1,25 +1,13 @@
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.DependencyInjection;
 using ski_shop.Entities;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace ski_shop.Data
 {
-    public class DbInitializer
+    public static class DbInitializer
     {
-        public static void Initialize(IServiceProvider serviceProvider)
+        public static void Initialize(StoreContext context)
         {
-            using (var context = new StoreContext(serviceProvider.GetRequiredService<DbContextOptions<StoreContext>>()))
-            {
-                context.Database.EnsureCreated();
-
-                if (context.Products.Any())
-                {
-                    return;
-                }
+            if (context.Products.Any()) return;
 
                 context.Products.AddRange(
                     new Product
@@ -221,7 +209,6 @@ namespace ski_shop.Data
                     );
 
                 context.SaveChanges();
-            }
         }
     }
 }

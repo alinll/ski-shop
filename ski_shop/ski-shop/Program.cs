@@ -26,21 +26,6 @@ internal class Program
 
         app.UseMiddleware<ExceptionMiddleware>();
 
-        using (var scope = app.Services.CreateScope())
-        {
-            var services = scope.ServiceProvider;
-
-            try
-            {
-                DbInitializer.Initialize(services);
-            }
-            catch (Exception ex)
-            {
-                var logger = services.GetRequiredService<ILogger<Program>>();
-                logger.LogError(ex, "An error occured seeding the DB.");
-            }
-        }
-
         // Configure the HTTP request pipeline.
         if (app.Environment.IsDevelopment())
         {
@@ -55,6 +40,20 @@ internal class Program
         app.UseAuthorization();
 
         app.MapControllers();
+
+        var scope = app.Services.CreateScope();
+        var context = scope.ServiceProvider.GetRequiredService<StoreContext>();
+        var logger = scope.ServiceProvider.GetRequiredService<ILogger<Program>>();
+
+        try
+        {
+            context.Database.Migrate();
+            DbInitializer.Initialize(context);
+        }
+        catch (Exception ex)
+        {
+            logger.LogError(ex, "A problem occurred during migration");
+        }
 
         app.Run();
     }
