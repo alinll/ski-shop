@@ -2,10 +2,11 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using ski_shop.Entities;
+using ski_shop.Entities.OrderAggregate;
 
 namespace ski_shop.Data
 {
-    public class StoreContext : IdentityDbContext<User>
+    public class StoreContext : IdentityDbContext<User, Role, int>
     {
         public StoreContext(DbContextOptions options) : base(options)
         {
@@ -13,14 +14,17 @@ namespace ski_shop.Data
 
         public DbSet<Product> Products { get; set; }
         public DbSet<Basket> Baskets { get; set; }
+        public DbSet<Order> Orders { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
 
-            builder.Entity<IdentityRole>().HasData(
-                new IdentityRole { Name = "Buyer", NormalizedName = "BUYER" },
-                new IdentityRole { Name = "Admin", NormalizedName = "ADMIN" }
+            builder.Entity<User>().HasOne(a => a.Address).WithOne().HasForeignKey<UserAddress>(a => a.Id).OnDelete(DeleteBehavior.Cascade);
+
+            builder.Entity<Role>().HasData(
+                new Role { Id = 1, Name = "Buyer", NormalizedName = "BUYER" },
+                new Role { Id = 2, Name = "Admin", NormalizedName = "ADMIN" }
             );
         }
     }

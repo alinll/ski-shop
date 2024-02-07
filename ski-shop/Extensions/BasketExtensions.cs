@@ -1,3 +1,4 @@
+using Microsoft.EntityFrameworkCore;
 using ski_shop.DTOs;
 using ski_shop.Entities;
 
@@ -22,6 +23,13 @@ namespace ski_shop.Extensions
                     Quantity = item.Quantity
                 }).ToList()
             };
+        }
+
+        public static IQueryable<Basket> RetrieveBasketWithItems(this IQueryable<Basket> query, string buyerId)
+        {
+            return query.Include(i => i.Items)
+            .ThenInclude(p => p.Product)
+            .Where(b => b.BuyerId == buyerId);
         }
     }
 }
