@@ -6,7 +6,7 @@ namespace ski_shop.Data
 {
     public static class DbInitializer
     {
-        public static void Initialize(StoreContext context, UserManager<User> userManager)
+        public static async Task Initialize(StoreContext context, UserManager<User> userManager)
         {
             if (!userManager.Users.Any()) 
             {
@@ -16,8 +16,8 @@ namespace ski_shop.Data
                     Email = "bob@test.com"
                 };
 
-                userManager.CreateAsync(user, "Pa$$w0rd");
-                userManager.AddToRoleAsync(user, "Buyer");
+                await userManager.CreateAsync(user, "Pa$$w0rd");
+                await userManager.AddToRoleAsync(user, "Buyer");
 
                 var admin = new User 
                 {
@@ -25,8 +25,8 @@ namespace ski_shop.Data
                     Email = "admin@test.com"
                 };
 
-                userManager.CreateAsync(admin, "Pa$$w0rd");
-                userManager.AddToRolesAsync(admin, new[] {"Buyer", "Admin"});
+                await userManager.CreateAsync(admin, "Pa$$w0rd");
+                await userManager.AddToRolesAsync(admin, new[] {"Buyer", "Admin"});
             }
 
             if (context.Products.Any()) return;

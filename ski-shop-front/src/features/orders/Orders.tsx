@@ -7,7 +7,7 @@ import { currencyFormat } from "../../app/util/util";
 import OrderDetailed from "./OrderDetailed";
 
 export default function Orders() {
-  const [orders, setOrders] = useState<Order | null>(null);
+  const [orders, setOrders] = useState<Order[] | null>(null);
   const [loading, setLoading] = useState(true);
   const [selectedOrderNumber, setSelectedOrderNumber] = useState(0);
 
