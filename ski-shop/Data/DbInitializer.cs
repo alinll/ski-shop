@@ -1,5 +1,4 @@
 using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
 using ski_shop.Entities;
 
 namespace ski_shop.Data

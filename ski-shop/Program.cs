@@ -7,6 +7,7 @@ using Microsoft.OpenApi.Models;
 using ski_shop.Data;
 using ski_shop.Entities;
 using ski_shop.Middleware;
+using ski_shop.RequestHelpers;
 using ski_shop.Services;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -14,6 +15,7 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 
 builder.Services.AddControllers();
+builder.Services.AddAutoMapper(typeof(MappingProfiles).Assembly);
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(c =>
